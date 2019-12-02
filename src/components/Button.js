@@ -9,7 +9,7 @@ const Button = ({ handleAddClick, handleMinusClick, sessionOrBreakLength }) => {
       </button>
       <p style={{ display: "inline", marginRight: "3px" }}>
         {" "}
-        {sessionOrBreakLength}{" "}
+        {Math.ceil(sessionOrBreakLength / 60)}{" "}
       </p>
       <button className="ui primary basic button" onClick={handleAddClick}>
         {" "}
