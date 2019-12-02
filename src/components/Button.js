@@ -1,10 +1,20 @@
 import React from "react";
 
-const Button = ({ handleAddClick, handleMinusClick }) => {
+const Button = ({ handleAddClick, handleMinusClick, sessionOrBreakLength }) => {
   return (
     <div>
-      <button onClick={handleMinusClick}> - </button>
-      <button onClick={handleAddClick}> + </button>
+      <button className="ui primary basic button" onClick={handleMinusClick}>
+        {" "}
+        -{" "}
+      </button>
+      <p style={{ display: "inline", marginRight: "3px" }}>
+        {" "}
+        {sessionOrBreakLength}{" "}
+      </p>
+      <button className="ui primary basic button" onClick={handleAddClick}>
+        {" "}
+        +{" "}
+      </button>
     </div>
   );
 };

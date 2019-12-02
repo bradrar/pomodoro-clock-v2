@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import SessionComponent from "./SessionComponent";
-import BreakComponent from "./BreakComponent";
+import SessionBreakComponent from "./SessionBreakComponent";
+import Timer from "./Timer";
+import "./App.css";
 
 const App = () => {
   const [sessionLength, setSessionLength] = useState(25);
@@ -31,19 +32,31 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="app ui container">
       <h2> Pomodoro Clock </h2>
 
-      <SessionComponent
-        sessionLength={sessionLength}
-        handleAddSession={handleAddSession}
-        handleMinusSession={handleMinusSession}
-      />
-      <BreakComponent
-        breakLength={breakLength}
-        handleAddBreak={handleAddBreak}
-        handleMinusBreak={handleMinusBreak}
-      />
+      <div className="ui centered grid">
+        <div className="custom-center four wide column">
+          <SessionBreakComponent
+            sessionOrBreak="Session"
+            sessionOrBreakLength={sessionLength}
+            handleAddSessionOrBreak={handleAddSession}
+            handleMinusSessionOrBreak={handleMinusSession}
+          />
+        </div>
+        <div className="custom-center four wide column">
+          <SessionBreakComponent
+            sessionOrBreak="Break"
+            sessionOrBreakLength={breakLength}
+            handleAddSessionOrBreak={handleAddBreak}
+            handleMinusSessionOrBreak={handleMinusBreak}
+          />
+        </div>
+      </div>
+
+      <div className="ui centered grid">
+        <Timer sessionLength={sessionLength} breakLength={breakLength} />
+      </div>
     </div>
   );
 };
