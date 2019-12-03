@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Alarm from "./Alarm";
 
 const Timer = ({
   sessionLength,
@@ -22,7 +23,8 @@ const Timer = ({
 
   const handleReset = () => {
     setPaused(true);
-    setSessionLength(25);
+    setSessionStart(false);
+    setSessionLength(25 * 60);
   };
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const Timer = ({
         {" "}
         Reset{" "}
       </button>
+      <Alarm />
     </div>
   );
 };

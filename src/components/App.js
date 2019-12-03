@@ -25,14 +25,18 @@ const App = () => {
   };
 
   const handleAddBreak = () => {
-    if (breakLength < 5 * 60) {
-      setBreakLength(breakLength + 60);
+    if (!sessionStart) {
+      if (breakLength < 5 * 60) {
+        setBreakLength(breakLength + 60);
+      }
     }
   };
 
   const handleMinusBreak = () => {
-    if (breakLength > 1 * 60) {
-      setBreakLength(breakLength - 60);
+    if (!sessionStart) {
+      if (breakLength > 1 * 60) {
+        setBreakLength(breakLength - 60);
+      }
     }
   };
 
