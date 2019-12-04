@@ -4,14 +4,17 @@ import Timer from "./Timer";
 import "./App.css";
 
 const App = () => {
-  const [sessionLength, setSessionLength] = useState(25 * 60);
-  const [breakLength, setBreakLength] = useState(5 * 60);
+  const [sessionLength, setSessionLength] = useState(0.3 * 60); //gawing 25*60 ulit
+  const [breakLength, setBreakLength] = useState(0.2 * 60);
   const [sessionStart, setSessionStart] = useState(false);
+  const [userSession, setUserSession] = useState(sessionLength);
+  const [userBreak, setUserBreak] = useState(breakLength);
 
   const handleAddSession = () => {
     if (!sessionStart) {
       if (sessionLength < 25 * 60) {
         setSessionLength(sessionLength + 60);
+        setUserSession(sessionLength + 60);
       }
     }
   };
@@ -20,6 +23,7 @@ const App = () => {
     if (!sessionStart) {
       if (sessionLength > 1 * 60) {
         setSessionLength(sessionLength - 60);
+        setUserSession(sessionLength - 60);
       }
     }
   };
@@ -28,6 +32,7 @@ const App = () => {
     if (!sessionStart) {
       if (breakLength < 5 * 60) {
         setBreakLength(breakLength + 60);
+        setUserBreak(breakLength + 60);
       }
     }
   };
@@ -36,6 +41,7 @@ const App = () => {
     if (!sessionStart) {
       if (breakLength > 1 * 60) {
         setBreakLength(breakLength - 60);
+        setUserBreak(breakLength - 60);
       }
     }
   };
@@ -69,6 +75,10 @@ const App = () => {
           breakLength={breakLength}
           setSessionLength={setSessionLength}
           setSessionStart={setSessionStart}
+          setBreakLength={setBreakLength}
+          sessionStart={sessionStart}
+          userSession={userSession}
+          userBreak={userBreak}
         />
       </div>
     </div>

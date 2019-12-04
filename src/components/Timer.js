@@ -5,57 +5,107 @@ const Timer = ({
   sessionLength,
   setSessionLength,
   breakLength,
-  setSessionStart
+  setBreakLength,
+  setSessionStart,
+  sessionStart,
+  userSession,
+  userBreak
 }) => {
   const [paused, setPaused] = useState(true);
   const [breakTime, setBreakTime] = useState(false);
-  const [seconds, setSeconds] = useState(sessionLength * 60);
 
-  const handlePlay = () => {
-    setPaused(false);
+  const handleSessionPlay = () => {
     setSessionStart(true);
   };
 
-  const handlePause = () => {
-    setPaused(true);
+  const handleSessionPause = () => {
     setSessionStart(false);
+    document.getElementById("sound").pause();
+    document.getElementById("sound").currentTime = 0; //add this to reset audio
+  };
+
+  const handleBreakPlay = () => {
+    document.getElementById("sound").pause();
+    document.getElementById("sound").currentTime = 0; //add this to reset audio
+    setBreakTime(false);
+  };
+
+  const handleBreakPause = () => {
+    setBreakTime(true);
+    document.getElementById("sound").pause();
+    document.getElementById("sound").currentTime = 0; //add this to reset audio
   };
 
   const handleReset = () => {
-    setPaused(true);
     setSessionStart(false);
     setSessionLength(25 * 60);
+    document.getElementById("sound").pause();
+    document.getElementById("sound").currentTime = 0; //add this to reset audio
   };
 
   useEffect(() => {
-    if (!sessionLength) return;
+    if (!sessionLength) {
+      document.getElementById("sound").play();
+      setBreakTime(true);
 
+      return;
+    }
     const int = setInterval(() => {
-      if (!paused) {
+      if (sessionStart) {
         setSessionLength(s => s - 1);
       }
     }, 1000);
     return () => {
       clearInterval(int);
     };
-  }, [sessionLength, setSessionLength, paused]);
+  }, [sessionStart, sessionLength, setSessionLength, paused, setBreakLength]);
 
-  const playButton = paused ? "Play" : "Pause";
+  //useEffect from BreakTime
+  useEffect(() => {
+    if (!breakLength) {
+      document.getElementById("sound").play();
+      setSessionLength(userSession);
+      setBreakTime(false);
+      setBreakLength(userBreak);
+      return;
+    }
+    const int = setInterval(() => {
+      if (breakTime) {
+        setBreakLength(s => s - 1);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(int);
+    };
+  }, [setSessionLength, breakLength, breakTime, paused, setBreakLength]);
+
+  const playButton = !sessionStart ? "Play" : "Pause";
+  const breakButton = !breakTime ? "Play" : "Pause";
+
+  const remainingSessionTime = `${Math.floor(sessionLength / 60)}:${(
+    "00" +
+    (sessionLength % 60)
+  ).slice(-2)}`;
+
+  const remainingBreakTime = `${Math.floor(breakLength / 60)}:${(
+    "00" +
+    (breakLength % 60)
+  ).slice(-2)}`;
+
+  const sessionOnClick =
+    !sessionStart && !breakTime ? handleSessionPlay : handleSessionPause;
+
+  const breakOnClick = !breakTime ? handleBreakPause : handleBreakPlay;
 
   return (
     <div>
-      <h3>
-        {`${Math.floor(sessionLength / 60)}:${(
-          "00" +
-          (sessionLength % 60)
-        ).slice(-2)}`}
-      </h3>
+      <h3> {sessionLength ? remainingSessionTime : remainingBreakTime}</h3>
       <button
-        onClick={paused ? handlePlay : handlePause}
+        onClick={sessionLength ? sessionOnClick : breakOnClick}
         className="ui primary button"
       >
         {" "}
-        {playButton}{" "}
+        {sessionLength ? playButton : breakButton}{" "}
       </button>
       <button onClick={handleReset} className="ui red basic button">
         {" "}
@@ -64,26 +114,6 @@ const Timer = ({
       <Alarm />
     </div>
   );
-};
-
-const convert = time => {
-  const sec_convert = time * 60;
-  var sec_num = parseInt(sec_convert, 10); // don't forget the second param
-  var hours = Math.floor(sec_num / 3600);
-  var minutes = Math.floor((sec_num - hours * 3600) / 60);
-  var seconds = sec_num - hours * 3600 - minutes * 60;
-
-  if (hours < 10) {
-    hours = "0" + hours;
-  }
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-
-  return `${minutes}:${seconds}`;
 };
 
 export default Timer;
