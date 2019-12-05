@@ -49,12 +49,11 @@ const App = () => {
   return (
     <div className="app ui container">
       <h2> Pomodoro Clock </h2>
-
       <div className="ui centered grid">
         <div className="custom-center four wide column">
           <SessionBreakComponent
             sessionOrBreak="Session"
-            sessionOrBreakLength={sessionLength}
+            sessionOrBreakLength={userSession}
             handleAddSessionOrBreak={handleAddSession}
             handleMinusSessionOrBreak={handleMinusSession}
           />
@@ -62,13 +61,12 @@ const App = () => {
         <div className="custom-center four wide column">
           <SessionBreakComponent
             sessionOrBreak="Break"
-            sessionOrBreakLength={breakLength}
+            sessionOrBreakLength={userBreak}
             handleAddSessionOrBreak={handleAddBreak}
             handleMinusSessionOrBreak={handleMinusBreak}
           />
         </div>
       </div>
-
       <div className="ui centered grid">
         <Timer
           sessionLength={sessionLength}

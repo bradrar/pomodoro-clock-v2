@@ -11,7 +11,6 @@ const Timer = ({
   userSession,
   userBreak
 }) => {
-  const [paused, setPaused] = useState(true);
   const [breakTime, setBreakTime] = useState(false);
 
   const handleSessionPlay = () => {
@@ -58,7 +57,7 @@ const Timer = ({
     return () => {
       clearInterval(int);
     };
-  }, [sessionStart, sessionLength, setSessionLength, paused, setBreakLength]);
+  }, [sessionStart, sessionLength, setSessionLength, setBreakLength]);
 
   //useEffect from BreakTime
   useEffect(() => {
@@ -77,10 +76,20 @@ const Timer = ({
     return () => {
       clearInterval(int);
     };
-  }, [setSessionLength, breakLength, breakTime, paused, setBreakLength]);
+  }, [
+    setSessionLength,
+    userBreak,
+    userSession,
+    breakLength,
+    breakTime,
+    setBreakLength
+  ]);
 
   const playButton = !sessionStart ? "Play" : "Pause";
   const breakButton = !breakTime ? "Play" : "Pause";
+
+  const startWorking = !sessionStart ? "" : "Start Working!";
+  const takeAbreak = !breakTime ? "" : "Take a break";
 
   const remainingSessionTime = `${Math.floor(sessionLength / 60)}:${(
     "00" +
@@ -100,6 +109,7 @@ const Timer = ({
   return (
     <div>
       <h3> {sessionLength ? remainingSessionTime : remainingBreakTime}</h3>
+      <p>{sessionLength ? startWorking : takeAbreak}</p>
       <button
         onClick={sessionLength ? sessionOnClick : breakOnClick}
         className="ui primary button"
